@@ -26,9 +26,15 @@ namespace Vidly.Controllers
             //return RedirectToAction("index","Home", new {x=4, name=6});
         }
 
-        public ActionResult Index(int id=100)
+        public ActionResult Index()
         {
-            return Content($"My Id: {id}");
+            var movies = new List<Movie>()
+            {
+                new Movie() { Id = 1, Name = "You, Me and Dupree" },
+                new Movie() { Id = 1, Name = "OpenHeimer" },
+                new Movie() { Id = 1, Name = "Interstellar" },
+            };
+            return View(movies);
         }
 
         [Route("movies/released/{year}/{month}")]
