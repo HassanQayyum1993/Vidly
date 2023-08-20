@@ -1,4 +1,5 @@
-﻿@model List<Vidly.Models.Movie>
+﻿@using Vidly.Models
+@model List<Vidly.Models.Movie>
 
 @{
     ViewBag.Title = "Index";
@@ -9,18 +10,22 @@
 
 <table class="table table-bordered table-hover">
     <thead>
-    <tr>
-        <th>
-            Movies
-        </th>
-    </tr>
+        <tr>
+            <th>
+                Movies
+            </th>
+            <th>
+                Genre
+            </th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var movie in Model)
-    {
-        <tr>
-            <td>@movie.Name</td>
-        </tr>
-    }
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(@movie.Name, "Details", new {movie.Id})</td>
+                <td>@movie.Genre.Name</td>
+            </tr>
+        }
     </tbody>
 </table>

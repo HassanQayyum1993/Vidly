@@ -1,4 +1,5 @@
-﻿@model Vidly.Models.Customer
+﻿@using System.Activities.Statements
+@model Vidly.Models.Customer
 
 @{
     ViewBag.Title = "Details";
@@ -6,4 +7,12 @@
 }
 
 <h2>@Model.Name</h2>
+<ul>
+    <li>Membership Type: @Model.MembershipType.MembershipName</li>
+    @if (@Model.BirthDate.HasValue)
+    {
+        <li>Date of Birth: @Model.BirthDate.Value.ToShortDateString()</li>
+    }
+</ul>
+
 

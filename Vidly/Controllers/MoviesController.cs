@@ -5,42 +5,36 @@ using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
+using System.Data.Entity;
 
 namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
-        // GET: Movie
-        public ActionResult Random()
+        private ApplicationDbContext _dbContext;
+        public MoviesController()
         {
-            var movie = new Movie() { Name = "OpenHeimer" };
-            var customers = new List<Customer>()
-            {
-                new Customer() { Id = 1, Name = "Hassan" },
-                new Customer() { Id = 1, Name = "Amina" },
-                new Customer() { Id = 1, Name = "Abdul" },
-            };
-
-            var viewModel = new RandomMovieViewModel() { Movie = movie, Customers = customers };
-            return View(viewModel);
-            //return RedirectToAction("index","Home", new {x=4, name=6});
+            _dbContext = new ApplicationDbContext();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            _dbContext.Dispose();
+        }
+
+        // GET: Movie
         public ActionResult Index()
         {
-            var movies = new List<Movie>()
-            {
-                new Movie() { Id = 1, Name = "You, Me and Dupree" },
-                new Movie() { Id = 1, Name = "OpenHeimer" },
-                new Movie() { Id = 1, Name = "Interstellar" },
-            };
+            var movies = _dbContext.Movies.Include(m => m.Genre).ToList();
             return View(movies);
         }
 
-        [Route("movies/released/{year}/{month}")]
-        public ActionResult ByReleaseDate(string year, string month)
+        // GET: Movie Details
+        public ActionResult Details(int Id)
         {
-            return Content($"Movie Release DateTime is {month}, {year}");
+            var movies = _dbContext.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == Id);
+            return View(movies);
         }
+
     }
 }
